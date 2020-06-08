@@ -1,4 +1,6 @@
 from Tkinter import *
+import os
+from tkinter.filedialog import askdirectory
 
 timer_counter = 10
 total_aim = 45
@@ -39,6 +41,28 @@ def create_level():
     level_label["text"] = "Your at Level: {}".format(level)
 
 
+def change_dir():
+    song_list = []
+
+    scriptDir = os.getcwd()  # directory from where script was ran
+    directory = askdirectory()
+    os.chdir(directory)
+
+    for file in os.listdir(directory):
+        if file.endswith('.mp3'):
+            realdir = os.path.realpath(file)
+            song_list.append(file)
+
+    os.chdir(scriptDir)
+
+
+def create_balloon():
+    render = Image.open('balloon.png')
+    image = PhotoImage(file=render)
+    button = Button(window, text="34", image=image, compound='center')
+    button.place(x=width / 2, y=height - 256, anchor="center")
+
+
 def countdown(counter):
     timer_label["text"] = "Time Left: {}".format(counter)
     if counter > 0:
@@ -59,6 +83,8 @@ def create():
     create_total_aim()
     create_score()
     create_level()
+
+    create_balloon()
 
     window.mainloop()
 
